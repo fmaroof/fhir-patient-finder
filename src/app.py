@@ -13,9 +13,11 @@ load_dotenv()
 username = os.getenv("FHIR_USERNAME")
 password = os.getenv("FHIR_PASSWORD")
 
-def request_patient(patient_id, credentials):
+def request_medications(patient_id, credentials):
 
-    req = requests.get(FHIR_SERVER_BASE_URL + "/Patient/" + str(patient_id), auth = credentials)
+    url = f"{FHIR_SERVER_BASE_URL}/MedicationRequest?patient={patient_id}"
+    
+    req = requests.get(url, auth = credentials)
     
     print(f"Requests status: {req.status_code}")
 
@@ -35,7 +37,7 @@ def index():
     if request.method == 'POST':
         try:
             number = int(request.form['number'])
-            result = request_patient(number, credentials=credentials)
+            result = request_medications(number, credentials=credentials)
         except ValueError:
             result = 'Invalid input. Please enter a number.'
 
