@@ -3,33 +3,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Medications</title>
+    <title>Medication Finder</title>
 </head>
 <body>
-    <div class=container>
-    <h1>Medications</h1>
-    <form method="post">
+    <div class= "container">       
+    <h1>Medication Finder</h1>
+    <form method="POST">
         <label for="number">Enter a patient ID:</label>
         <input type="text" name="number" id="number">
         <input type="submit" value="Search">
     </form>
-    
+    {% if medications is not none %}
     <br>
     <ul>
-    <h3>Result: </h3>
+    <h3>Medication List: </h3>
         {% for medication in medications %}
             <li>
-                Medication Name: {{ medication.resource.medicationCodeableConcept.text }}<br>}}
-                Dosage: {{ medication.resource.dosageInstruction.text }}<br>
-                Status: {{ medication.resource.status }}
-            </li>   
-
+                Medication: {{ medication.resource.medicationCodeableConcept.coding[0].display }}<br>     
+           </li>  
+            
         {% endfor %}
     </ul>
+    {% else %}
+        <p> No medications found. </p>
+    {% endif %}   
+
+    </div>
 </body>
 </html>
-
-
 <style>
     .container {
         display: grid;
