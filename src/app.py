@@ -19,14 +19,8 @@ def request_medications(patient_id, credentials):
     
     req = requests.get(url, auth = credentials)
     
-    print(f"Requests status: {req.status_code}")
-
-    response = req.json()
-    print(response.keys())
-
-    return response
-
-
+    medications = req.json().get("entry",[])
+    return medications
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -41,7 +35,7 @@ def index():
         except ValueError:
             result = 'Invalid input. Please enter a number.'
 
-    return render_template('index.html', result=result)
+    return render_template('index.html', medications=result)
 
 if __name__ == '__main__':
     app.run(debug=True)
