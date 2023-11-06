@@ -13,10 +13,10 @@ load_dotenv()
 username = os.getenv("FHIR_USERNAME")
 password = os.getenv("FHIR_PASSWORD")
 
-def request_medications(patient_id, credentials):
+def request_medications(code_id, credentials):
 
-    url = f"{FHIR_SERVER_BASE_URL}/MedicationRequest?patient={patient_id}"
-    
+    #url = f"{FHIR_SERVER_BASE_URL}/MedicationRequest?patient={patient_id}"
+    url = f"{FHIR_SERVER_BASE_URL}/MedicationRequest?_has:Observation:code={code_id}"
     req = requests.get(url, auth = credentials)
     
     medications = req.json().get("entry",[])
@@ -33,7 +33,7 @@ def index():
             number = int(request.form['number'])
             result = request_medications(number, credentials=credentials)
         except ValueError:
-            result = 'Invalid input. Please enter a number.'
+            result = 'Invalid input. Please enter a SNOMED code.'
 
     return render_template('index.html', medications=result)
 
